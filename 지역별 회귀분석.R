@@ -22,6 +22,7 @@ table(is.na(analysis_total_Fixed))
 
 save(analysis_total_Fixed,file = 'refinedata/analysis/analysis_total_Fixed.rda')
 
+load('refinedata/analysis/analysis_total_Fixed.rda')
 lm_total <- analysis_total_Fixed %>% 
   mutate(`100명당 발생건수` = 발생건수/인구수*100) %>% 
   group_by(시도) %>% 
@@ -54,5 +55,5 @@ summary(lm.fit)
 library(car)
 
 vif(lm.fit)
-lm_vif_Fixed <- lm_Fixed[c(-1,-2,-4,-6,-7,-8,-11,-12,-14)]
-cor(lm_vif_Fixed)
+lm_vif_Fixed <- lm_Fixed[c(-1,-2,-4,-6,-8,-11,-12,-14)]
+cor(lm_Fixed)
