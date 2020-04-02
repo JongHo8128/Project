@@ -1,7 +1,7 @@
 # 군집화
 
 # 계층적 군집분석
-load('refinedata/analysis/analysis_total_Fixed.rda')
+load('analysis_total_Fixed.rda')
 analysis_total <- analysis_total_Fixed
 library(dplyr)
 View(analysis_total)
@@ -29,7 +29,7 @@ analysis_total <- analysis_total %>%
     발생건수 = sum(발생건수)
   )	
 
-analysis_total <- analysis_total %>% mutate(`100명당 발생건수` = 발생건수/인구수*100)
+analysis_total <- analysis_total %>% mutate(발생건수 = 발생건수/인구수)
 
 analysis_total <- analysis_total %>% 
   group_by(시도) %>% 
@@ -48,7 +48,7 @@ analysis_total <- analysis_total %>%
     NO2 = mean(NO2,na.rm=TRUE),		
     PM10 = mean(PM10,na.rm=TRUE),	
     PM25 = mean(PM25,na.rm=TRUE),	
-    `100명당 발생건수` = sum(`100명당 발생건수`)
+    발생건수 = sum(발생건수)
   )
 
 View(analysis_total)
@@ -68,9 +68,10 @@ plot(fit, hang=-1)
 
 
 # k=5 군집개수로 수형도의 군집들을 자름!!
-clusters <- cutree(fit, k = 5)
+clusters <- cutree(fit, k = 7)
 clusters
 
+fit$clusters <- clusters
 table(clusters)
 
 # (2) K-means clustering with k=3 수행
@@ -81,7 +82,7 @@ library(cluster)
 # (4) 차원축소 후, 군집결과 시각화
 clusplot(
   analysis_total_1, 
-  fit$cluster, 
+  fit$clusters, 
   color = T, 
   shade = T,
   labels = 2,
